@@ -7,11 +7,12 @@ class MovieList extends Component {
 	}
 
 	onSearch(event) {
-		// ...
+		this.props.theSearchChanged(event.target.value);
 	}
 
 	componentDidMount() {
-		// ...
+		// doesn't do anything at this point
+		this.props.itDidMount();
 	}
 
 	render() {
@@ -23,12 +24,17 @@ class MovieList extends Component {
 			<div>
 				<input type="text" onChange={this.onSearch}/>
 				<h1> Movie List </h1>
-				{this.props.requestPending && 				
+
+				{this.props.requestPending &&
 					<h3> Request Pending </h3>
 			 	}
 
-				{!this.props.requestPending && 
-					<div>			
+				{this.props.isError && this.props.errorMessage &&
+					<h3> {this.props.errorMessage} </h3>
+			 	}
+
+				{!this.props.requestPending &&
+					<div>
 						<ul>
 							{movies}
 						</ul>
@@ -40,9 +46,9 @@ class MovieList extends Component {
 }
 
 MovieList.propTypes = {
-	onSearchChange: PropTypes.func.isRequired,
+	theSearchChanged: PropTypes.func.isRequired,
 	movies: PropTypes.array.isRequired,
-	onDidMount: PropTypes.func
+	itDidMount: PropTypes.func
 };
 
 export default MovieList;

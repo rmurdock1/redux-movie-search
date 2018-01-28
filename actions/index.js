@@ -14,7 +14,7 @@ export const loadMovies = (searchParam, dispatch) => {
 	// indicate we are loading movies now
 	dispatch(requestMovies());
 
-	fetch(`SOME_API_URL`)
+	fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=67b3e416&s=${searchParam}`)
   .then((response) => response.json())
   .then((responseJson) => {
     // "we successfully got back a response" scenario
@@ -24,15 +24,34 @@ export const loadMovies = (searchParam, dispatch) => {
     // dispatch EMITS AN ACTION
     // (an action <--> view only)
     // --> dispatch change the view to the success view
+		console.log(responseJson);
+				// check if not too many results
+				if(responseJson.Response != 'False'){
+					dispatch(someActionCreator(responseJson))
+				}
+				else{
+					dispatch(handleFailure(responseJson))
+				}
 
     dispatch(someActionCreator(responseJson))
   })
   // ...what about failure?...
+	.catch((err) => {
+				dispatch(handleFailure(err))
+			}
+		)
+
+};
+
+export const handleFailure = (err) => {
+	return {
+		type: LOAD_FAILURE,
+		errorMessage: err.Error
+	};
 };
 
 export const requestMovies = () => {
-	// create action for requesting movies
-	// ...
+	return {type: LOAD_REQUEST};
 };
 
 export const someActionCreator = (jsonData) => {
@@ -40,7 +59,7 @@ export const someActionCreator = (jsonData) => {
     type: LOAD_SUCCESS,
     // anything else you want!!
     // include movies coming from the data
-    data: jsonData.Search
+    movies: jsonData.Search
     // TODO: handle edge cases: null response, no search results
   }
 };
