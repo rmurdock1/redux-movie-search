@@ -1,4 +1,6 @@
 import { LOAD_REQUEST, LOAD_SUCCESS, LOAD_FAILURE } from '../actions';
+import thunk from 'redux-thunk';
+
 
 const initialState = {
   isLoading: false,

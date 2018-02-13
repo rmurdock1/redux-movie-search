@@ -16,9 +16,22 @@ class MovieList extends Component {
 	}
 
 	render() {
-		const movies = this.props.movies.map((movie) => {
-			return <li key={movie.imdbID}>{movie.Title}</li>
-		});
+		const movieLister = () => {
+			if(this.props.movies){
+				return this.props.movies.map((movie) => {
+					return (<li key={movie.imdbID}>{movie.Title}</li>)
+				})
+			} else {
+				return (
+					<h3>Please Enter a Movie Title</h3>
+				)
+			}
+		}
+
+
+		// const movies = this.props.movies.map((movie) => {
+		// 	return <li key={movie.imdbID}>{movie.Title}</li>
+		// });
 
 		return (
 			<div>
@@ -36,7 +49,7 @@ class MovieList extends Component {
 				{!this.props.requestPending &&
 					<div>
 						<ul>
-							{movies}
+							{movieLister()}
 						</ul>
 					</div>
 			 	}
